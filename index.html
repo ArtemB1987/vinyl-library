@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Vinyl Library">
+    <meta name="apple-mobile-web-app-title" content="Gold Vinyl Collection">
     <meta name="theme-color" content="#1a1a1a">
-    <title>Vinyl Rock Library</title>
+    <title>Gold Vinyl Collection</title>
+    
+    <!-- Google Fonts - красивый шрифт для золотого текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -16,8 +20,13 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(45, 45, 45, 0.95) 100%), 
+                        url('https://img.gazeta.ru/files3/217/6639217/upload-02-pic4_zoom-1000x1000-86082.jpg') center/cover fixed;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
             color: #e0e0e0;
             min-height: 100vh;
             padding: 20px;
@@ -28,26 +37,26 @@
             margin: 0 auto;
         }
 
-        /* Login Screen */
-        .login-screen {
+        /* Admin Modal */
+        .admin-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 2000;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
-        .login-screen.active {
+        .admin-modal.active {
             display: flex;
         }
 
-        .login-card {
+        .admin-card {
             background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
             border: 2px solid #d4af37;
             border-radius: 15px;
@@ -57,27 +66,27 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
 
-        .login-card h1 {
+        .admin-card h2 {
             color: #d4af37;
             margin-bottom: 10px;
-            font-size: 2.5em;
+            font-size: 1.8em;
             text-align: center;
         }
 
-        .login-card p {
+        .admin-card p {
             color: #888;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-size: 0.95em;
         }
 
-        .login-form {
+        .admin-form {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        .login-form input {
+        .admin-form input {
             padding: 15px;
             border: 1px solid #d4af37;
             background: rgba(255, 255, 255, 0.08);
@@ -86,13 +95,19 @@
             font-size: 1em;
         }
 
-        .login-buttons {
+        .admin-form input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffd700;
+        }
+
+        .admin-buttons {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
 
-        .btn-login {
+        .admin-buttons button {
             flex: 1;
             padding: 15px;
             border: none;
@@ -102,20 +117,21 @@
             cursor: pointer;
         }
 
-        .btn-admin {
+        .btn-admin-enter {
             background: linear-gradient(135deg, #d4af37, #ffd700);
             color: #1a1a1a;
         }
 
-        .btn-guest {
+        .btn-admin-cancel {
             background: #555;
             color: #e0e0e0;
         }
 
-        .login-error {
+        .admin-error {
             color: #ff6b6b;
             text-align: center;
             display: none;
+            font-size: 0.9em;
         }
 
         /* Header */
@@ -132,10 +148,17 @@
         }
 
         h1 {
-            font-size: 3em;
-            color: #d4af37;
-            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700 0%, #d4af37 50%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             flex: 1;
+            margin-bottom: 10px;
         }
 
         .subtitle {
@@ -165,13 +188,22 @@
             font-size: 0.85em;
         }
 
-        .btn-logout {
-            background: #8b4444;
-            color: #e0e0e0;
+        .btn-admin-login {
+            background: #d4af37;
+            color: #1a1a1a;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin-login:hover {
+            background: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
         /* Control Panel */
@@ -481,47 +513,95 @@
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 1.8em; }
+            h1 { font-size: 2em; }
             header { flex-direction: column; }
             .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
             .form-group { grid-template-columns: 1fr; }
-            .login-card { padding: 25px; }
         }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-screen active">
-        <div class="login-card">
-            <h1>🎸 VINYL LIBRARY</h1>
-            <p>Добро пожаловать!</p>
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-card">
+            <h2>👤 Режим администратора</h2>
+            <p>Введите учетные данные</p>
             
-            <form id="loginForm" class="login-form">
-                <input type="text" id="loginUsername" placeholder="Имя пользователя" required>
-                <input type="password" id="loginPassword" placeholder="Пароль" required>
-                <div class="login-error" id="loginError"></div>
+            <form id="adminForm" class="admin-form" onsubmit="handleAdminLogin(event)">
+                <div>
+                    <label for="adminUsername" style="color: #d4af37; display: block; margin-bottom: 8px;">Логин:</label>
+                    <input type="text" id="adminUsername" placeholder="admin" required>
+                </div>
                 
-                <div class="login-buttons">
-                    <button type="button" class="btn-login btn-admin" onclick="loginAsAdmin()">👤 Admin</button>
-                    <button type="button" class="btn-login btn-guest" onclick="loginAsGuest()">👁️ Guest</button>
+                <div>
+                    <label for="adminPassword" style="color: #d4af37; display: block; margin-bottom: 8px;">Пароль:</label>
+                    <input type="password" id="adminPassword" placeholder="Введите пароль" required>
+                </div>
+                
+                <div class="admin-error" id="adminError"></div>
+                
+                <div class="admin-buttons">
+                    <button type="submit" class="btn-admin-enter">✓ Вход</button>
+                    <button type="button" class="btn-admin-cancel" onclick="closeAdminModal()">✕ Отмена</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="container" id="mainContainer" style="display: none;">
+    <div class="container" id="mainContainer">
         <!-- Header -->
         <header>
-            <div>
-                <h1>🎸 VINYL ROCK LIBRARY</h1>
-                <p class="subtitle">Ваша коллекция виниловых пластинок</p>
+            <div style="flex: 1;">
+                <svg style="width: 80px; height: 80px; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Guitar Body -->
+                    <defs>
+                        <linearGradient id="headerGuitarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#ffd700;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="headerGuitarGlow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    
+                    <path d="M 100 30 Q 130 40 140 70 Q 145 85 140 100 Q 145 115 140 130 Q 130 160 100 170 Q 70 160 60 130 Q 55 115 60 100 Q 55 85 60 70 Q 70 40 100 30 Z" 
+                          fill="url(#headerGuitarGradient)" stroke="#8b6914" stroke-width="2" filter="url(#headerGuitarGlow)"/>
+                    <circle cx="100" cy="85" r="12" fill="#1a1a1a" stroke="#d4af37" stroke-width="1.5"/>
+                    <path d="M 95 75 Q 105 80 105 100 Q 105 115 95 120 Q 90 115 90 100 Q 90 80 95 75 Z" fill="rgba(0, 0, 0, 0.3)" stroke="#d4af37" stroke-width="1"/>
+                    <rect x="95" y="15" width="10" height="50" fill="#8b6914" stroke="#6b5310" stroke-width="1" rx="2"/>
+                    <path d="M 95 10 Q 90 5 100 0 Q 110 5 105 10 L 100 15 Z" fill="#8b6914" stroke="#6b5310" stroke-width="1.5"/>
+                    <circle cx="92" cy="5" r="3" fill="#d4af37" stroke="#8b6914" stroke-width="0.5"/>
+                    <circle cx="97" cy="3" r="3" fill="#d4af37" stroke="#8b6914" stroke-width="0.5"/>
+                    <circle cx="103" cy="3" r="3" fill="#d4af37" stroke="#8b6914" stroke-width="0.5"/>
+                    <circle cx="108" cy="5" r="3" fill="#d4af37" stroke="#8b6914" stroke-width="0.5"/>
+                    <line x1="92" y1="5" x2="100" y2="30" stroke="#d4af37" stroke-width="0.8" opacity="0.8"/>
+                    <line x1="97" y1="3" x2="98" y2="30" stroke="#d4af37" stroke-width="0.8" opacity="0.8"/>
+                    <line x1="103" y1="3" x2="102" y2="30" stroke="#d4af37" stroke-width="0.8" opacity="0.8"/>
+                    <line x1="108" y1="5" x2="108" y2="30" stroke="#d4af37" stroke-width="0.8" opacity="0.8"/>
+                    <line x1="98" y1="30" x2="98" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.7"/>
+                    <line x1="102" y1="30" x2="102" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.7"/>
+                    <rect x="95" y="155" width="10" height="8" fill="#d4af37" stroke="#8b6914" stroke-width="1" rx="1"/>
+                    <rect x="85" y="150" width="6" height="20" fill="#8b6914" stroke="#6b5310" stroke-width="0.5" rx="1"/>
+                    <circle cx="100" cy="50" r="1.5" fill="#d4af37" opacity="0.6"/>
+                    <circle cx="100" cy="70" r="1.5" fill="#d4af37" opacity="0.6"/>
+                    <circle cx="100" cy="90" r="1.5" fill="#d4af37" opacity="0.6"/>
+                    <circle cx="100" cy="110" r="1.5" fill="#d4af37" opacity="0.6"/>
+                    <circle cx="100" cy="130" r="1.5" fill="#d4af37" opacity="0.6"/>
+                </svg>
+                <h1>Gold Vinyl Collection</h1>
+                <p class="subtitle">Ваша коллекция редких виниловых пластинок</p>
             </div>
             <div class="user-info">
                 <div>
                     <div class="user-role" id="userRole"></div>
                     <div class="user-name" id="userName"></div>
                 </div>
-                <button class="btn-logout" onclick="logout()">Выход</button>
+                <button class="btn-admin-login" id="adminLoginBtn" onclick="openAdminModal()">👤 Администратор</button>
             </div>
         </header>
 
@@ -529,21 +609,21 @@
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-number" id="totalCount">0</div>
-                <div class="stat-label">Всего пластинок</div>
+                <div class="stat-label">Всего в коллекции</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="genreCount">0</div>
-                <div class="stat-label">Жанров</div>
+                <div class="stat-label">Уникальных жанров</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="artistCount">0</div>
-                <div class="stat-label">Исполнителей</div>
+                <div class="stat-label">Уникальных исполнителей</div>
             </div>
         </div>
 
         <!-- Control Panel -->
         <div class="control-panel" id="controlPanel">
-            <h2>➕ Добавить пластинку</h2>
+            <h2>➕ Добавить пластинку в коллекцию</h2>
             <form id="addVinylForm">
                 <div class="form-group">
                     <div>
@@ -605,7 +685,8 @@
         <!-- Empty State -->
         <div id="emptyState" class="empty-state" style="display: none;">
             <div style="font-size: 4em; margin-bottom: 20px;">💿</div>
-            <p>Библиотека пока пуста</p>
+            <p>Коллекция пока пуста</p>
+            <p style="color: #555;">Администратор может добавить первую пластинку</p>
         </div>
     </div>
 
@@ -626,6 +707,31 @@
         let vinylCollection = [];
         let currentUser = null;
         let isAdmin = false;
+
+        // Initialize - Auto login as guest on page load
+        window.addEventListener('load', () => {
+            console.log('✅ Приложение загружено');
+            currentUser = 'guest';
+            isAdmin = false;
+            enterApp();
+        });
+
+        // Enter app
+        function enterApp() {
+            document.getElementById('userRole').textContent = isAdmin ? '👤 Администратор' : '👁️ Гость';
+            document.getElementById('userName').textContent = currentUser;
+
+            if (isAdmin) {
+                document.getElementById('controlPanel').classList.remove('hidden');
+                document.getElementById('adminLoginBtn').style.display = 'none';
+            } else {
+                document.getElementById('controlPanel').classList.add('hidden');
+                document.getElementById('adminLoginBtn').style.display = 'block';
+            }
+
+            console.log('🎸 Загружаем коллекцию для', currentUser);
+            loadFromFirebase();
+        }
 
         // Load data from Firebase via REST API
         async function loadFromFirebase() {
@@ -710,66 +816,48 @@
             });
         }
 
-        // Login
-        function loginAsAdmin() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
+        // Admin login handler
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
 
             if (username === 'admin' && password === 'admin123') {
                 currentUser = username;
                 isAdmin = true;
-                enterApp();
-            } else {
-                showLoginError('Неверные учетные данные');
+                closeAdminModal();
+                updateUIAfterAdminLogin();
+                console.log('✅ Вход как администратор');
+                return;
             }
-        }
 
-        function loginAsGuest() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (username === 'guest' && password === 'guest123') {
-                currentUser = username;
-                isAdmin = false;
-                enterApp();
-            } else {
-                showLoginError('Неверные учетные данные');
-            }
-        }
-
-        function showLoginError(message) {
-            const error = document.getElementById('loginError');
-            error.textContent = message;
+            const error = document.getElementById('adminError');
+            error.textContent = '❌ Неверный логин или пароль администратора';
             error.style.display = 'block';
             setTimeout(() => error.style.display = 'none', 3000);
         }
 
-        function enterApp() {
-            document.getElementById('loginScreen').classList.remove('active');
-            document.getElementById('mainContainer').style.display = 'block';
-            
-            document.getElementById('userRole').textContent = isAdmin ? '👤 Администратор' : '👁️ Гость';
-            document.getElementById('userName').textContent = currentUser;
-
-            if (isAdmin) {
-                document.getElementById('controlPanel').classList.remove('hidden');
-            } else {
-                document.getElementById('controlPanel').classList.add('hidden');
-            }
-
-            console.log('🎸 Загружаем коллекцию для', currentUser);
-            loadFromFirebase();
+        // Open admin modal
+        function openAdminModal() {
+            document.getElementById('adminModal').classList.add('active');
         }
 
-        function logout() {
-            if (confirm('Вы уверены?')) {
-                currentUser = null;
-                isAdmin = false;
-                document.getElementById('loginScreen').classList.add('active');
-                document.getElementById('mainContainer').style.display = 'none';
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-            }
+        // Close admin modal
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('active');
+            document.getElementById('adminForm').reset();
+            document.getElementById('adminError').style.display = 'none';
+        }
+
+        // Update UI after admin login
+        function updateUIAfterAdminLogin() {
+            document.getElementById('userRole').textContent = '👤 Администратор';
+            document.getElementById('userName').textContent = 'admin';
+            document.getElementById('adminLoginBtn').textContent = '✓ Администратор';
+            document.getElementById('adminLoginBtn').style.background = '#4caf50';
+            document.getElementById('adminLoginBtn').disabled = true;
+            document.getElementById('controlPanel').classList.remove('hidden');
         }
 
         // Add vinyl
@@ -978,7 +1066,7 @@
         });
 
         // Init
-        console.log('✅ Приложение готово');
+        console.log('✅ Скрипт загружен');
     </script>
 </body>
 </html>
