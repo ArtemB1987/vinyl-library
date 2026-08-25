@@ -28,6 +28,45 @@
             margin: 0 auto;
         }
 
+        /* Loading Screen */
+        .loading-screen {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loading-screen.hidden {
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(212, 175, 55, 0.3);
+            border-top: 4px solid #d4af37;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #d4af37;
+            font-size: 1.1em;
+        }
+
         /* Login Screen */
         .login-screen {
             display: none;
@@ -138,6 +177,17 @@
             display: none;
         }
 
+        .firebase-status {
+            color: #4caf50;
+            text-align: center;
+            font-size: 0.85em;
+            margin-top: 15px;
+        }
+
+        .firebase-status.offline {
+            color: #ff9800;
+        }
+
         /* Header */
         header {
             text-align: center;
@@ -200,6 +250,15 @@
         .user-name {
             color: #aaa;
             font-size: 0.85em;
+        }
+
+        .sync-status {
+            color: #4caf50;
+            font-size: 0.75em;
+        }
+
+        .sync-status.syncing {
+            color: #ff9800;
         }
 
         .btn-logout {
@@ -884,7 +943,6 @@
             }
         }
 
-        /* Extra small screens */
         @media (max-width: 480px) {
             body {
                 padding: 8px;
@@ -972,7 +1030,6 @@
             }
         }
 
-        /* Touch-friendly buttons for mobile */
         @media (hover: none) and (pointer: coarse) {
             button, .vinyl-card {
                 padding: 12px 16px;
@@ -987,6 +1044,12 @@
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="spinner"></div>
+        <div class="loading-text">Загрузка приложения...</div>
+    </div>
+
     <!-- Login Screen -->
     <div id="loginScreen" class="login-screen active">
         <div class="login-card">
@@ -1006,6 +1069,8 @@
                         👁️ Гость
                     </button>
                 </div>
+                
+                <div class="firebase-status" id="firebaseStatus">⏳ Инициализация Firebase...</div>
             </form>
         </div>
     </div>
@@ -1021,6 +1086,7 @@
                 <div class="user-status">
                     <div class="user-role" id="userRole"></div>
                     <div class="user-name" id="userName"></div>
+                    <div class="sync-status" id="syncStatus">✓ Синхронизировано</div>
                 </div>
                 <button class="btn-logout" onclick="logout()">Выход</button>
             </div>
@@ -1153,37 +1219,156 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+
     <script>
-        // Global state - используем более надежное хранилище
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnT6kNsk_-BYtyIKnu6nsuZBeDfLtcnJs",
+            projectId: "vinyl-library-7f059",
+            databaseURL: "https://vinyl-library-7f059-default-rtdb.europe-west1.firebasedatabase.app",
+            appId: "1:987654321:web:abcdef123456"
+        };
+
+        // Global state
         let vinylCollection = [];
         let currentUser = null;
         let isAdmin = false;
+        let firebaseReady = false;
+        let firebaseDB = null;
 
-        // Инициализация хранилища
-        function initStorage() {
+        // Initialize Firebase
+        function initializeFirebase() {
+            try {
+                firebase.initializeApp(firebaseConfig);
+                firebaseDB = firebase.database();
+                firebaseReady = true;
+                console.log('Firebase инициализирован успешно');
+                updateFirebaseStatus('✓ Firebase подключен');
+                
+                // Загружаем данные с Firebase после инициализации
+                loadFromFirebase();
+            } catch (error) {
+                console.error('Firebase init error:', error);
+                updateFirebaseStatus('⚠️ Firebase: используем локальное хранилище');
+                loadFromLocalStorage();
+            }
+        }
+
+        // Update Firebase Status
+        function updateFirebaseStatus(message) {
+            const status = document.getElementById('firebaseStatus');
+            if (status) {
+                status.textContent = message;
+                if (message.includes('подключен')) {
+                    status.style.color = '#4caf50';
+                } else if (message.includes('локальное')) {
+                    status.style.color = '#ff9800';
+                }
+            }
+        }
+
+        // Загрузка данных с Firebase
+        function loadFromFirebase() {
+            if (!firebaseReady || !firebaseDB) {
+                loadFromLocalStorage();
+                return;
+            }
+
+            firebaseDB.ref('vinylCollection').once('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    vinylCollection = Object.values(data);
+                    console.log('Данные загружены из Firebase:', vinylCollection.length, 'альбомов');
+                } else {
+                    vinylCollection = [];
+                    console.log('Firebase пуста');
+                }
+                saveToLocalStorage();
+            }).catch((error) => {
+                console.error('Firebase load error:', error);
+                loadFromLocalStorage();
+            });
+
+            // Слушаем изменения в реальном времени
+            firebaseDB.ref('vinylCollection').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    vinylCollection = Object.values(data);
+                    saveToLocalStorage();
+                    if (currentUser) {
+                        renderGallery();
+                        updateStats();
+                        updateSyncStatus('✓ Синхронизировано');
+                    }
+                }
+            });
+        }
+
+        // Загрузка из локального хранилища
+        function loadFromLocalStorage() {
             try {
                 const stored = localStorage.getItem('vinylCollection');
                 if (stored) {
                     vinylCollection = JSON.parse(stored);
+                    console.log('Данные загружены из localStorage');
                 } else {
                     vinylCollection = [];
                 }
             } catch (e) {
-                console.error('Storage error:', e);
+                console.error('LocalStorage error:', e);
                 vinylCollection = [];
             }
         }
 
-        // Сохранение в хранилище
-        function saveStorage() {
+        // Сохранение в Firebase
+        function saveToFirebase() {
+            if (!firebaseReady || !firebaseDB) return;
+
+            updateSyncStatus('🔄 Синхронизация...');
+
+            const dataToSave = {};
+            vinylCollection.forEach((vinyl) => {
+                dataToSave[vinyl.id] = vinyl;
+            });
+
+            firebaseDB.ref('vinylCollection').set(dataToSave)
+                .then(() => {
+                    console.log('Данные сохранены в Firebase');
+                    updateSyncStatus('✓ Синхронизировано');
+                })
+                .catch((error) => {
+                    console.error('Firebase save error:', error);
+                    updateSyncStatus('⚠️ Ошибка синхронизации');
+                });
+        }
+
+        // Сохранение в локальное хранилище
+        function saveToLocalStorage() {
             try {
                 localStorage.setItem('vinylCollection', JSON.stringify(vinylCollection));
             } catch (e) {
-                console.error('Save storage error:', e);
+                console.error('LocalStorage save error:', e);
             }
         }
 
-        // Credentials (простая система авторизации)
+        // Полное сохранение
+        function saveStorage() {
+            saveToLocalStorage();
+            saveToFirebase();
+        }
+
+        // Update Sync Status
+        function updateSyncStatus(message) {
+            const status = document.getElementById('syncStatus');
+            if (status) {
+                status.textContent = message;
+            }
+        }
+
+        // Credentials
         const ADMIN_CREDENTIALS = {
             username: 'admin',
             password: 'admin123'
@@ -1196,6 +1381,7 @@
 
         // DOM Elements
         const loginScreen = document.getElementById('loginScreen');
+        const loadingScreen = document.getElementById('loadingScreen');
         const mainContainer = document.getElementById('mainContainer');
         const loginForm = document.getElementById('loginForm');
         const loginError = document.getElementById('loginError');
@@ -1215,12 +1401,9 @@
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            console.log('Login attempt:', username);
-
             if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
                 currentUser = username;
                 isAdmin = true;
-                initStorage();
                 enterApp();
             } else {
                 showLoginError('Неверные учетные данные администратора');
@@ -1231,12 +1414,9 @@
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            console.log('Login attempt:', username);
-
             if (username === GUEST_CREDENTIALS.username && password === GUEST_CREDENTIALS.password) {
                 currentUser = username;
                 isAdmin = false;
-                initStorage();
                 enterApp();
             } else {
                 showLoginError('Неверные учетные данные гостя');
@@ -1578,9 +1758,20 @@
             }
         });
 
-        // Initialize app on page load
-        console.log('Page loaded, initializing...');
-        initStorage();
+        // Initialize on page load
+        console.log('Инициализация приложения...');
+        window.addEventListener('load', () => {
+            console.log('Page fully loaded');
+            loadingScreen.classList.add('hidden');
+            initializeFirebase();
+        });
+
+        // Also try to initialize immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeFirebase);
+        } else {
+            initializeFirebase();
+        }
     </script>
 </body>
 </html>
