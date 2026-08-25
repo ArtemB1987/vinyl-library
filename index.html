@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Vinyl Library">
     <meta name="theme-color" content="#1a1a1a">
-    <title>Vinyl Rock Library - Библиотека виниловых пластинок</title>
+    <title>Vinyl Rock Library</title>
     <style>
         * {
             margin: 0;
@@ -26,45 +26,6 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        .loading-screen.hidden {
-            display: none;
-        }
-
-        .spinner {
-            border: 4px solid rgba(212, 175, 55, 0.3);
-            border-top: 4px solid #d4af37;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: #d4af37;
-            font-size: 1.1em;
         }
 
         /* Login Screen */
@@ -101,7 +62,6 @@
             margin-bottom: 10px;
             font-size: 2.5em;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
         .login-card p {
@@ -124,13 +84,11 @@
             color: #e0e0e0;
             border-radius: 5px;
             font-size: 1em;
-            transition: all 0.3s ease;
         }
 
         .login-form input:focus {
             outline: none;
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
             border-color: #ffd700;
         }
 
@@ -148,7 +106,6 @@
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .btn-admin {
@@ -156,36 +113,15 @@
             color: #1a1a1a;
         }
 
-        .btn-admin:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
         .btn-guest {
             background: #555;
             color: #e0e0e0;
         }
 
-        .btn-guest:hover {
-            background: #666;
-        }
-
         .login-error {
             color: #ff6b6b;
             text-align: center;
-            font-size: 0.9em;
             display: none;
-        }
-
-        .firebase-status {
-            color: #4caf50;
-            text-align: center;
-            font-size: 0.85em;
-            margin-top: 15px;
-        }
-
-        .firebase-status.offline {
-            color: #ff9800;
         }
 
         /* Header */
@@ -199,66 +135,27 @@
             align-items: center;
         }
 
-        header .title-section {
-            flex: 1;
-        }
-
         h1 {
             font-size: 3em;
             color: #d4af37;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
             margin-bottom: 10px;
-            font-weight: 700;
+            flex: 1;
         }
 
         .subtitle {
             color: #888;
             font-size: 1.1em;
-            font-style: italic;
         }
 
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(212, 175, 55, 0.1);
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 1px solid #d4af37;
-        }
-
-        .user-status {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
         }
 
         .user-role {
             color: #d4af37;
             font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .user-role.admin::before {
-            content: "👤 ";
-        }
-
-        .user-role.guest::before {
-            content: "👁️ ";
-        }
-
-        .user-name {
-            color: #aaa;
-            font-size: 0.85em;
-        }
-
-        .sync-status {
-            color: #4caf50;
-            font-size: 0.75em;
-        }
-
-        .sync-status.syncing {
-            color: #ff9800;
         }
 
         .btn-logout {
@@ -268,12 +165,6 @@
             padding: 8px 16px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-        }
-
-        .btn-logout:hover {
-            background: #a85555;
         }
 
         /* Control Panel */
@@ -283,7 +174,6 @@
             border-radius: 10px;
             padding: 25px;
             margin-bottom: 30px;
-            backdrop-filter: blur(10px);
         }
 
         .control-panel.hidden {
@@ -293,7 +183,6 @@
         .control-panel h2 {
             color: #d4af37;
             margin-bottom: 20px;
-            font-size: 1.5em;
         }
 
         .form-group {
@@ -307,15 +196,10 @@
             grid-column: 1 / -1;
         }
 
-        .input-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
         label {
             color: #d4af37;
+            display: block;
             margin-bottom: 8px;
-            font-weight: 500;
         }
 
         input[type="text"],
@@ -328,30 +212,12 @@
             color: #e0e0e0;
             border-radius: 5px;
             font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus,
-        input[type="file"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-            border-color: #ffd700;
+            width: 100%;
         }
 
         textarea {
             resize: vertical;
             min-height: 80px;
-            grid-column: 1 / -1;
-        }
-
-        /* Buttons */
-        .button-group {
-            display: flex;
-            gap: 10px;
-            grid-column: 1 / -1;
         }
 
         button {
@@ -361,76 +227,52 @@
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #d4af37, #ffd700);
             color: #1a1a1a;
-            flex: 1;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
         .btn-secondary {
             background: #555;
             color: #e0e0e0;
-            flex: 1;
         }
 
-        .btn-secondary:hover {
-            background: #666;
-        }
-
-        .btn-danger {
-            background: #8b4444;
-            color: #e0e0e0;
-        }
-
-        .btn-danger:hover {
-            background: #a85555;
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.9em;
-        }
-
-        /* Filters & Sort */
-        .filters-section {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-            align-items: center;
-        }
-
-        .filter-group {
+        .button-group {
             display: flex;
             gap: 10px;
-            align-items: center;
         }
 
-        .filter-group label {
-            margin: 0;
-            color: #d4af37;
-            white-space: nowrap;
-        }
-
-        .filter-group select {
-            min-width: 150px;
-        }
-
-        .search-box {
+        .button-group button {
             flex: 1;
-            min-width: 200px;
         }
 
-        .search-box input {
-            width: 100%;
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #aaa;
+            margin-top: 10px;
         }
 
         /* Gallery */
@@ -446,44 +288,30 @@
             border: 2px solid #d4af37;
             border-radius: 10px;
             overflow: hidden;
-            transition: all 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            position: relative;
+            transition: all 0.3s ease;
         }
 
         .vinyl-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
             border-color: #ffd700;
         }
 
         .album-cover {
             width: 100%;
             height: 250px;
-            background: linear-gradient(135deg, #444, #222);
+            background: linear-gradient(135deg, #555, #333);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 3em;
             overflow: hidden;
-            position: relative;
         }
 
         .album-cover img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .album-cover-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #555, #333);
-            color: #888;
-            font-size: 3em;
         }
 
         .card-info {
@@ -493,14 +321,11 @@
         .card-info h3 {
             color: #ffd700;
             margin-bottom: 8px;
-            font-size: 1.2em;
-            word-break: break-word;
         }
 
         .card-info p {
             color: #aaa;
             margin-bottom: 8px;
-            font-size: 0.95em;
         }
 
         .genre-tag {
@@ -511,34 +336,6 @@
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.85em;
-            margin-bottom: 12px;
-        }
-
-        .description {
-            color: #bbb;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-            max-height: 60px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .empty-state p {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        .vinyl-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            opacity: 0.5;
         }
 
         /* Modal */
@@ -553,8 +350,8 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            overflow-y: auto;
             padding: 20px;
+            overflow-y: auto;
         }
 
         .modal.active {
@@ -586,27 +383,6 @@
             background: none;
             border: none;
             padding: 0;
-            width: 30px;
-            height: 30px;
-            margin-top: -10px;
-            line-height: 1;
-        }
-
-        .close-modal:hover {
-            color: #ffd700;
-        }
-
-        /* Tracklist */
-        .tracklist-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #d4af37;
-        }
-
-        .tracklist-section h3 {
-            color: #d4af37;
-            margin-bottom: 15px;
-            font-size: 1.2em;
         }
 
         .track-item {
@@ -616,25 +392,12 @@
             padding: 15px;
             margin-bottom: 10px;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
             align-items: center;
-        }
-
-        .track-number {
-            color: #d4af37;
-            font-weight: bold;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .track-info {
-            flex: 1;
         }
 
         .track-name {
             color: #e0e0e0;
-            font-weight: 500;
-            margin-bottom: 5px;
         }
 
         .track-duration {
@@ -642,419 +405,26 @@
             font-size: 0.9em;
         }
 
-        .track-delete-btn {
-            background: #8b4444;
-            color: #e0e0e0;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.85em;
-        }
-
-        .track-delete-btn:hover {
-            background: #a85555;
-        }
-
-        .track-delete-btn.hidden {
-            display: none;
-        }
-
-        .add-track-form {
-            background: rgba(212, 175, 55, 0.08);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .add-track-form.hidden {
-            display: none;
-        }
-
-        .add-track-form input {
-            margin-bottom: 10px;
-        }
-
-        .add-track-form input:last-of-type {
-            margin-bottom: 0;
-        }
-
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid #d4af37;
-            border-radius: 8px;
-            padding: 20px;
+        .empty-state {
             text-align: center;
+            padding: 60px 20px;
+            color: #666;
         }
 
-        .stat-number {
-            font-size: 2.5em;
-            color: #ffd700;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            color: #aaa;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-
-        .guest-notice {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #ffc107;
-            text-align: center;
-            font-size: 0.95em;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 0;
-                margin-bottom: 20px;
-            }
-
-            header .title-section {
-                width: 100%;
-            }
-
-            .subtitle {
-                font-size: 0.85em;
-            }
-
-            .user-info {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .user-status {
-                align-items: flex-start;
-            }
-
-            .form-group {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 12px;
-                margin-top: 15px;
-            }
-
-            .filters-section {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .filter-group {
-                width: 100%;
-                gap: 8px;
-            }
-
-            .filter-group label {
-                min-width: 80px;
-            }
-
-            .filter-group select {
-                flex: 1;
-                min-width: auto;
-            }
-
-            .search-box {
-                min-width: auto;
-            }
-
-            .modal-content {
-                padding: 15px;
-            }
-
-            .login-card {
-                padding: 25px;
-            }
-
-            .login-card h1 {
-                font-size: 1.8em;
-            }
-
-            .login-card p {
-                margin-bottom: 25px;
-            }
-
-            .control-panel {
-                padding: 15px;
-            }
-
-            .control-panel h2 {
-                font-size: 1.2em;
-                margin-bottom: 15px;
-            }
-
-            .album-cover {
-                height: 180px;
-            }
-
-            .card-info {
-                padding: 12px;
-            }
-
-            .card-info h3 {
-                font-size: 1em;
-            }
-
-            .card-info p {
-                font-size: 0.85em;
-                margin-bottom: 6px;
-            }
-
-            .track-item {
-                padding: 10px;
-                gap: 10px;
-                flex-wrap: wrap;
-            }
-
-            .track-delete-btn {
-                padding: 4px 10px;
-                font-size: 0.8em;
-            }
-
-            .button-group {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            button {
-                padding: 10px 16px;
-                font-size: 0.95em;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-                gap: 12px;
-                margin-bottom: 15px;
-            }
-
-            .stat-card {
-                padding: 15px;
-            }
-
-            .stat-number {
-                font-size: 2em;
-            }
-
-            .stat-label {
-                font-size: 0.8em;
-                margin-top: 8px;
-            }
-
-            .vinyl-icon {
-                font-size: 3em;
-            }
-
-            .description {
-                max-height: 50px;
-                font-size: 0.85em;
-            }
-
-            .genre-tag {
-                font-size: 0.8em;
-                padding: 3px 10px;
-            }
-
-            .add-track-form {
-                padding: 12px;
-            }
-
-            .add-track-form input {
-                padding: 10px;
-                font-size: 16px;
-            }
-
-            input[type="text"],
-            input[type="file"],
-            select,
-            textarea {
-                font-size: 16px;
-                padding: 10px;
-            }
-
-            .login-form input {
-                padding: 12px;
-                font-size: 16px;
-            }
-
-            label {
-                font-size: 0.95em;
-                margin-bottom: 6px;
-            }
-
-            .user-role {
-                font-size: 0.85em;
-            }
-
-            .user-name {
-                font-size: 0.8em;
-            }
-
-            .btn-logout {
-                padding: 8px 12px;
-                font-size: 0.85em;
-            }
-
-            .guest-notice {
-                padding: 10px;
-                font-size: 0.9em;
-                margin-bottom: 15px;
-            }
-
-            .tracklist-section h3 {
-                font-size: 1.1em;
-                margin-bottom: 12px;
-            }
-
-            .track-name {
-                font-size: 0.95em;
-                margin-bottom: 3px;
-            }
-
-            .track-duration {
-                font-size: 0.85em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 8px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            header {
-                margin-bottom: 15px;
-            }
-
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 10px;
-            }
-
-            .album-cover {
-                height: 140px;
-            }
-
-            .card-info {
-                padding: 10px;
-            }
-
-            .card-info h3 {
-                font-size: 0.95em;
-                margin-bottom: 5px;
-            }
-
-            .card-info p {
-                font-size: 0.8em;
-                margin-bottom: 4px;
-            }
-
-            .stats {
-                gap: 10px;
-            }
-
-            .stat-card {
-                padding: 12px;
-            }
-
-            .stat-number {
-                font-size: 1.8em;
-            }
-
-            .stat-label {
-                font-size: 0.75em;
-            }
-
-            .login-card {
-                padding: 20px;
-            }
-
-            .login-card h1 {
-                font-size: 1.5em;
-            }
-
-            .control-panel {
-                padding: 12px;
-            }
-
-            .filter-group label {
-                min-width: auto;
-                font-size: 0.9em;
-            }
-
-            .track-item {
-                padding: 8px;
-            }
-
-            .track-number {
-                min-width: 25px;
-                font-size: 0.9em;
-            }
-
-            .add-track-form input {
-                margin-bottom: 8px;
-            }
-
-            .modal-content {
-                padding: 12px;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            button, .vinyl-card {
-                padding: 12px 16px;
-                min-height: 44px;
-            }
-
-            input, select, textarea {
-                min-height: 44px;
-                font-size: 16px;
-            }
+            h1 { font-size: 1.8em; }
+            header { flex-direction: column; gap: 15px; }
+            .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            .form-group { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="loading-screen">
-        <div class="spinner"></div>
-        <div class="loading-text">Загрузка приложения...</div>
-    </div>
-
     <!-- Login Screen -->
     <div id="loginScreen" class="login-screen active">
         <div class="login-card">
             <h1>🎸 VINYL LIBRARY</h1>
-            <p>Добро пожаловать в вашу коллекцию виниловых пластинок</p>
+            <p>Добро пожаловать!</p>
             
             <form id="loginForm" class="login-form">
                 <input type="text" id="loginUsername" placeholder="Имя пользователя" required>
@@ -1062,15 +432,9 @@
                 <div class="login-error" id="loginError"></div>
                 
                 <div class="login-buttons">
-                    <button type="button" class="btn-login btn-admin" onclick="loginAsAdmin()">
-                        👤 Администратор
-                    </button>
-                    <button type="button" class="btn-login btn-guest" onclick="loginAsGuest()">
-                        👁️ Гость
-                    </button>
+                    <button type="button" class="btn-login btn-admin" onclick="loginAsAdmin()">👤 Admin</button>
+                    <button type="button" class="btn-login btn-guest" onclick="loginAsGuest()">👁️ Guest</button>
                 </div>
-                
-                <div class="firebase-status" id="firebaseStatus">⏳ Инициализация Firebase...</div>
             </form>
         </div>
     </div>
@@ -1078,24 +442,18 @@
     <div class="container" id="mainContainer" style="display: none;">
         <!-- Header -->
         <header>
-            <div class="title-section">
+            <div>
                 <h1>🎸 VINYL ROCK LIBRARY</h1>
-                <p class="subtitle">Ваша личная картотека виниловых пластинок</p>
+                <p class="subtitle">Ваша коллекция виниловых пластинок</p>
             </div>
             <div class="user-info">
-                <div class="user-status">
+                <div>
                     <div class="user-role" id="userRole"></div>
-                    <div class="user-name" id="userName"></div>
-                    <div class="sync-status" id="syncStatus">✓ Синхронизировано</div>
+                    <div style="font-size: 0.9em; color: #aaa;" id="userName"></div>
                 </div>
                 <button class="btn-logout" onclick="logout()">Выход</button>
             </div>
         </header>
-
-        <!-- Guest Notice -->
-        <div id="guestNotice" class="guest-notice" style="display: none;">
-            👁️ Вы находитесь в режиме гостя. Просмотр доступен, редактирование недоступно.
-        </div>
 
         <!-- Stats -->
         <div class="stats">
@@ -1103,37 +461,29 @@
                 <div class="stat-number" id="totalCount">0</div>
                 <div class="stat-label">Всего пластинок</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="genreCount">0</div>
-                <div class="stat-label">Уникальных жанров</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="artistCount">0</div>
-                <div class="stat-label">Уникальных исполнителей</div>
-            </div>
         </div>
 
         <!-- Control Panel -->
         <div class="control-panel" id="controlPanel">
-            <h2>➕ Добавить новую пластинку</h2>
+            <h2>➕ Добавить пластинку</h2>
             <form id="addVinylForm">
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <label for="artist">Исполнитель (Artist) *</label>
-                        <input type="text" id="artist" placeholder="The Beatles, Pink Floyd..." required>
+                    <div>
+                        <label for="artist">Исполнитель *</label>
+                        <input type="text" id="artist" required>
                     </div>
-                    <div class="input-wrapper">
+                    <div>
                         <label for="album">Название альбома *</label>
-                        <input type="text" id="album" placeholder="Abbey Road, The Wall..." required>
+                        <input type="text" id="album" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="input-wrapper">
+                    <div>
                         <label for="year">Год выпуска</label>
-                        <input type="text" id="year" placeholder="1969">
+                        <input type="text" id="year">
                     </div>
-                    <div class="input-wrapper">
+                    <div>
                         <label for="genre">Жанр *</label>
                         <select id="genre" required>
                             <option value="">Выберите жанр</option>
@@ -1141,63 +491,22 @@
                             <option value="Progressive Rock">Progressive Rock</option>
                             <option value="Hard Rock">Hard Rock</option>
                             <option value="Punk Rock">Punk Rock</option>
-                            <option value="Alternative Rock">Alternative Rock</option>
-                            <option value="Psychedelic Rock">Psychedelic Rock</option>
-                            <option value="Heavy Metal">Heavy Metal</option>
-                            <option value="Grunge">Grunge</option>
-                            <option value="Indie Rock">Indie Rock</option>
-                            <option value="Post-Rock">Post-Rock</option>
-                            <option value="Glam Rock">Glam Rock</option>
-                            <option value="Blues Rock">Blues Rock</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group full">
-                    <div class="input-wrapper">
-                        <label for="description">Описание / Заметки</label>
-                        <textarea id="description" placeholder="Добавьте интересные факты, свои впечатления..."></textarea>
-                    </div>
-                </div>
-
-                <div class="form-group full">
-                    <div class="input-wrapper">
-                        <label for="coverImage">Обложка альбома (изображение)</label>
-                        <input type="file" id="coverImage" accept="image/*">
-                        <small style="color: #888; margin-top: 5px;">Форматы: JPG, PNG, WebP (макс. 5MB)</small>
+                    <div>
+                        <label for="description">Описание</label>
+                        <textarea id="description"></textarea>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="submit" class="btn-primary">🎵 Добавить в библиотеку</button>
-                    <button type="reset" class="btn-secondary">Очистить форму</button>
+                    <button type="submit" class="btn-primary">🎵 Добавить</button>
+                    <button type="reset" class="btn-secondary">Очистить</button>
                 </div>
             </form>
-        </div>
-
-        <!-- Filters -->
-        <div class="filters-section">
-            <div class="filter-group search-box">
-                <input type="text" id="searchInput" placeholder="🔍 Искать по исполнителю или альбому...">
-            </div>
-            <div class="filter-group">
-                <label for="filterGenre">Фильтр по жанру:</label>
-                <select id="filterGenre">
-                    <option value="">Все жанры</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="sortBy">Сортировка:</label>
-                <select id="sortBy">
-                    <option value="name-asc">По названию (А-Я)</option>
-                    <option value="name-desc">По названию (Я-А)</option>
-                    <option value="artist-asc">По исполнителю (А-Я)</option>
-                    <option value="artist-desc">По исполнителю (Я-А)</option>
-                    <option value="year-desc">По году (новые)</option>
-                    <option value="year-asc">По году (старые)</option>
-                    <option value="date-added">По дате добавления</option>
-                </select>
-            </div>
         </div>
 
         <!-- Gallery -->
@@ -1205,13 +514,12 @@
 
         <!-- Empty State -->
         <div id="emptyState" class="empty-state" style="display: none;">
-            <div class="vinyl-icon">💿</div>
+            <div style="font-size: 4em; margin-bottom: 20px;">💿</div>
             <p>Библиотека пока пуста</p>
-            <p style="color: #555;">Добавьте первую пластинку, и она появится здесь!</p>
         </div>
     </div>
 
-    <!-- Modal for viewing details -->
+    <!-- Modal -->
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeDetailModal()">&times;</button>
@@ -1219,194 +527,98 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
-
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnT6kNsk_-BYtyIKnu6nsuZBeDfLtcnJs",
-            projectId: "vinyl-library-7f059",
-            databaseURL: "https://vinyl-library-7f059-default-rtdb.europe-west1.firebasedatabase.app",
-            appId: "1:987654321:web:abcdef123456"
-        };
+        // Firebase REST API Configuration
+        const FIREBASE_DB_URL = 'https://vinyl-library-7f059-default-rtdb.europe-west1.firebasedatabase.app';
+        const VINYL_PATH = '/vinylCollection.json';
 
         // Global state
         let vinylCollection = [];
         let currentUser = null;
         let isAdmin = false;
-        let firebaseReady = false;
-        let firebaseDB = null;
 
-        // Initialize Firebase
-        function initializeFirebase() {
+        // Load data from Firebase via REST API
+        async function loadFromFirebase() {
             try {
-                firebase.initializeApp(firebaseConfig);
-                firebaseDB = firebase.database();
-                firebaseReady = true;
-                console.log('Firebase инициализирован успешно');
-                updateFirebaseStatus('✓ Firebase подключен');
+                console.log('📡 Загружаем данные с Firebase...');
+                const response = await fetch(FIREBASE_DB_URL + VINYL_PATH);
+                const data = await response.json();
                 
-                // Загружаем данные с Firebase после инициализации
-                loadFromFirebase();
-            } catch (error) {
-                console.error('Firebase init error:', error);
-                updateFirebaseStatus('⚠️ Firebase: используем локальное хранилище');
-                loadFromLocalStorage();
-            }
-        }
-
-        // Update Firebase Status
-        function updateFirebaseStatus(message) {
-            const status = document.getElementById('firebaseStatus');
-            if (status) {
-                status.textContent = message;
-                if (message.includes('подключен')) {
-                    status.style.color = '#4caf50';
-                } else if (message.includes('локальное')) {
-                    status.style.color = '#ff9800';
-                }
-            }
-        }
-
-        // Загрузка данных с Firebase
-        function loadFromFirebase() {
-            if (!firebaseReady || !firebaseDB) {
-                loadFromLocalStorage();
-                return;
-            }
-
-            firebaseDB.ref('vinylCollection').once('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
+                if (data && typeof data === 'object') {
                     vinylCollection = Object.values(data);
-                    console.log('Данные загружены из Firebase:', vinylCollection.length, 'альбомов');
+                    console.log('✅ Загружено:', vinylCollection.length, 'альбомов');
                 } else {
                     vinylCollection = [];
-                    console.log('Firebase пуста');
+                    console.log('ℹ️ Firebase пуста');
                 }
+                
                 saveToLocalStorage();
-            }).catch((error) => {
-                console.error('Firebase load error:', error);
+                updateStats();
+                renderGallery();
+            } catch (error) {
+                console.error('❌ Ошибка загрузки Firebase:', error);
                 loadFromLocalStorage();
-            });
-
-            // Слушаем изменения в реальном времени
-            firebaseDB.ref('vinylCollection').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    vinylCollection = Object.values(data);
-                    saveToLocalStorage();
-                    if (currentUser) {
-                        renderGallery();
-                        updateStats();
-                        updateSyncStatus('✓ Синхронизировано');
-                    }
-                }
-            });
+            }
         }
 
-        // Загрузка из локального хранилища
+        // Load from localStorage
         function loadFromLocalStorage() {
             try {
                 const stored = localStorage.getItem('vinylCollection');
                 if (stored) {
                     vinylCollection = JSON.parse(stored);
-                    console.log('Данные загружены из localStorage');
-                } else {
-                    vinylCollection = [];
+                    console.log('📂 Загружено из localStorage:', vinylCollection.length);
                 }
             } catch (e) {
-                console.error('LocalStorage error:', e);
-                vinylCollection = [];
+                console.error('❌ LocalStorage ошибка:', e);
             }
         }
 
-        // Сохранение в Firebase
-        function saveToFirebase() {
-            if (!firebaseReady || !firebaseDB) return;
-
-            updateSyncStatus('🔄 Синхронизация...');
-
-            const dataToSave = {};
-            vinylCollection.forEach((vinyl) => {
-                dataToSave[vinyl.id] = vinyl;
-            });
-
-            firebaseDB.ref('vinylCollection').set(dataToSave)
-                .then(() => {
-                    console.log('Данные сохранены в Firebase');
-                    updateSyncStatus('✓ Синхронизировано');
-                })
-                .catch((error) => {
-                    console.error('Firebase save error:', error);
-                    updateSyncStatus('⚠️ Ошибка синхронизации');
-                });
-        }
-
-        // Сохранение в локальное хранилище
-        function saveToLocalStorage() {
+        // Save to Firebase via REST API
+        async function saveToFirebase() {
             try {
-                localStorage.setItem('vinylCollection', JSON.stringify(vinylCollection));
-            } catch (e) {
-                console.error('LocalStorage save error:', e);
+                console.log('📤 Сохраняем в Firebase...');
+                const dataToSave = {};
+                vinylCollection.forEach(vinyl => {
+                    dataToSave[vinyl.id] = vinyl;
+                });
+
+                const response = await fetch(FIREBASE_DB_URL + VINYL_PATH, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSave)
+                });
+
+                if (response.ok) {
+                    console.log('✅ Сохранено в Firebase');
+                }
+            } catch (error) {
+                console.error('❌ Ошибка сохранения:', error);
             }
         }
 
-        // Полное сохранение
+        // Save to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('vinylCollection', JSON.stringify(vinylCollection));
+        }
+
+        // Save everywhere
         function saveStorage() {
             saveToLocalStorage();
             saveToFirebase();
         }
 
-        // Update Sync Status
-        function updateSyncStatus(message) {
-            const status = document.getElementById('syncStatus');
-            if (status) {
-                status.textContent = message;
-            }
-        }
-
-        // Credentials
-        const ADMIN_CREDENTIALS = {
-            username: 'admin',
-            password: 'admin123'
-        };
-
-        const GUEST_CREDENTIALS = {
-            username: 'guest',
-            password: 'guest123'
-        };
-
-        // DOM Elements
-        const loginScreen = document.getElementById('loginScreen');
-        const loadingScreen = document.getElementById('loadingScreen');
-        const mainContainer = document.getElementById('mainContainer');
-        const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
-        const addVinylForm = document.getElementById('addVinylForm');
-        const gallery = document.getElementById('gallery');
-        const emptyState = document.getElementById('emptyState');
-        const filterGenreSelect = document.getElementById('filterGenre');
-        const sortBySelect = document.getElementById('sortBy');
-        const searchInput = document.getElementById('searchInput');
-        const controlPanel = document.getElementById('controlPanel');
-        const guestNotice = document.getElementById('guestNotice');
-        const userRole = document.getElementById('userRole');
-        const userName = document.getElementById('userName');
-
-        // Login Functions
+        // Login
         function loginAsAdmin() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            if (username === 'admin' && password === 'admin123') {
                 currentUser = username;
                 isAdmin = true;
                 enterApp();
             } else {
-                showLoginError('Неверные учетные данные администратора');
+                showLoginError('Неверные учетные данные');
             }
         }
 
@@ -1414,134 +626,84 @@
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            if (username === GUEST_CREDENTIALS.username && password === GUEST_CREDENTIALS.password) {
+            if (username === 'guest' && password === 'guest123') {
                 currentUser = username;
                 isAdmin = false;
                 enterApp();
             } else {
-                showLoginError('Неверные учетные данные гостя');
+                showLoginError('Неверные учетные данные');
             }
         }
 
         function showLoginError(message) {
-            loginError.textContent = message;
-            loginError.style.display = 'block';
-            console.error('Login error:', message);
-            setTimeout(() => {
-                loginError.style.display = 'none';
-            }, 3000);
+            const error = document.getElementById('loginError');
+            error.textContent = message;
+            error.style.display = 'block';
+            setTimeout(() => error.style.display = 'none', 3000);
         }
 
         function enterApp() {
-            console.log('Entering app as:', currentUser, 'Admin:', isAdmin);
-            loginScreen.classList.remove('active');
-            mainContainer.style.display = 'block';
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('mainContainer').style.display = 'block';
             
-            // Update user info
-            userRole.textContent = isAdmin ? '👤 Администратор' : '👁️ Гость';
-            userRole.className = isAdmin ? 'user-role admin' : 'user-role guest';
-            userName.textContent = currentUser;
+            document.getElementById('userRole').textContent = isAdmin ? '👤 Администратор' : '👁️ Гость';
+            document.getElementById('userName').textContent = currentUser;
 
-            // Show/hide UI elements based on role
             if (isAdmin) {
-                controlPanel.classList.remove('hidden');
-                guestNotice.style.display = 'none';
+                document.getElementById('controlPanel').classList.remove('hidden');
             } else {
-                controlPanel.classList.add('hidden');
-                guestNotice.style.display = 'block';
+                document.getElementById('controlPanel').classList.add('hidden');
             }
 
-            updateStats();
-            renderGallery();
+            console.log('🎸 Загружаем коллекцию для', currentUser);
+            loadFromFirebase();
         }
 
         function logout() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
+            if (confirm('Вы уверены?')) {
                 currentUser = null;
                 isAdmin = false;
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-                loginError.style.display = 'none';
-                loginScreen.classList.add('active');
-                mainContainer.style.display = 'none';
+                document.getElementById('loginScreen').classList.add('active');
+                document.getElementById('mainContainer').style.display = 'none';
             }
         }
 
-        // Event Listeners
-        addVinylForm.addEventListener('submit', handleAddVinyl);
-        filterGenreSelect.addEventListener('change', renderGallery);
-        sortBySelect.addEventListener('change', renderGallery);
-        searchInput.addEventListener('input', renderGallery);
-
-        // Add Vinyl
-        async function handleAddVinyl(e) {
+        // Add vinyl
+        document.getElementById('addVinylForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
             if (!isAdmin) {
-                alert('❌ Только администратор может добавлять пластинки');
+                alert('Только администратор может добавлять');
                 return;
-            }
-
-            const artist = document.getElementById('artist').value.trim();
-            const album = document.getElementById('album').value.trim();
-            const year = document.getElementById('year').value.trim();
-            const genre = document.getElementById('genre').value;
-            const description = document.getElementById('description').value.trim();
-            const coverImageInput = document.getElementById('coverImage');
-
-            let coverImage = null;
-
-            if (coverImageInput.files.length > 0) {
-                const file = coverImageInput.files[0];
-                
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('❌ Размер файла не должен превышать 5MB');
-                    return;
-                }
-
-                coverImage = await fileToBase64(file);
             }
 
             const newVinyl = {
                 id: Date.now(),
-                artist,
-                album,
-                year,
-                genre,
-                description,
-                coverImage,
-                tracks: [],
+                artist: document.getElementById('artist').value.trim(),
+                album: document.getElementById('album').value.trim(),
+                year: document.getElementById('year').value.trim(),
+                genre: document.getElementById('genre').value,
+                description: document.getElementById('description').value.trim(),
                 dateAdded: new Date().toISOString()
             };
 
             vinylCollection.push(newVinyl);
-            saveStorage();
+            await saveStorage();
 
-            addVinylForm.reset();
+            document.getElementById('addVinylForm').reset();
             renderGallery();
             updateStats();
+            alert('✅ Добавлено!');
+        });
 
-            alert('✅ Пластинка успешно добавлена!');
-        }
-
-        // Convert file to base64
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Delete Vinyl
+        // Delete vinyl
         function deleteVinyl(id) {
             if (!isAdmin) {
-                alert('❌ Только администратор может удалять пластинки');
+                alert('Только администратор может удалять');
                 return;
             }
 
-            if (confirm('Вы уверены? Эту пластинку нельзя будет восстановить.')) {
+            if (confirm('Удалить?')) {
                 vinylCollection = vinylCollection.filter(v => v.id !== id);
                 saveStorage();
                 renderGallery();
@@ -1550,228 +712,67 @@
             }
         }
 
-        // Add Track
-        function addTrack(vinylId) {
-            if (!isAdmin) {
-                alert('❌ Только администратор может добавлять треки');
-                return;
-            }
-
-            const trackName = document.getElementById(`trackName-${vinylId}`).value.trim();
-            const trackDuration = document.getElementById(`trackDuration-${vinylId}`).value.trim();
-
-            if (!trackName) {
-                alert('⚠️ Введите название трека');
-                return;
-            }
-
-            const vinyl = vinylCollection.find(v => v.id === vinylId);
-            if (!vinyl) return;
-
-            if (!vinyl.tracks) vinyl.tracks = [];
-
-            vinyl.tracks.push({
-                id: Date.now(),
-                name: trackName,
-                duration: trackDuration
-            });
-
-            saveStorage();
-            showDetailModal(vinylId);
-        }
-
-        // Delete Track
-        function deleteTrack(vinylId, trackId) {
-            if (!isAdmin) {
-                alert('❌ Только администратор может удалять треки');
-                return;
-            }
-
-            const vinyl = vinylCollection.find(v => v.id === vinylId);
-            if (!vinyl) return;
-
-            vinyl.tracks = vinyl.tracks.filter(t => t.id !== trackId);
-            saveStorage();
-            showDetailModal(vinylId);
-        }
-
-        // Current vinyl being viewed
-        let currentVinylId = null;
-
-        // Show Detail Modal
-        function showDetailModal(vinylId) {
-            currentVinylId = vinylId;
-            
-            const vinyl = vinylCollection.find(v => v.id === vinylId);
-            if (!vinyl) return;
-
-            const modalBody = document.getElementById('modalBody');
-            
-            const coverHtml = vinyl.coverImage 
-                ? `<img src="${vinyl.coverImage}" style="width: 100%; max-width: 300px; border-radius: 8px; margin-bottom: 20px;">`
-                : `<div style="width: 100%; max-width: 300px; height: 300px; background: linear-gradient(135deg, #555, #333); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 3em; margin-bottom: 20px;">💿</div>`;
-
-            const tracksHtml = vinyl.tracks && vinyl.tracks.length > 0
-                ? vinyl.tracks.map((track, index) => `
-                    <div class="track-item">
-                        <div class="track-number">${index + 1}</div>
-                        <div class="track-info">
-                            <div class="track-name">${track.name}</div>
-                            ${track.duration ? `<div class="track-duration">⏱️ ${track.duration}</div>` : ''}
-                        </div>
-                        <button class="track-delete-btn ${!isAdmin ? 'hidden' : ''}" onclick="deleteTrack(${vinyl.id}, ${track.id})">Удалить</button>
-                    </div>
-                `).join('')
-                : '<p style="color: #888;">Треков еще нет</p>';
-
-            modalBody.innerHTML = `
-                ${coverHtml}
-                <h2 style="color: #d4af37; margin-bottom: 10px;">${vinyl.album}</h2>
-                <p style="color: #aaa; font-size: 1.2em; margin-bottom: 5px;"><strong>Исполнитель:</strong> ${vinyl.artist}</p>
-                <p style="color: #aaa; margin-bottom: 5px;"><strong>Жанр:</strong> <span class="genre-tag">${vinyl.genre}</span></p>
-                ${vinyl.year ? `<p style="color: #aaa; margin-bottom: 5px;"><strong>Год выпуска:</strong> ${vinyl.year}</p>` : ''}
-                <p style="color: #999; margin-bottom: 15px; font-size: 0.9em;"><strong>Добавлена:</strong> ${new Date(vinyl.dateAdded).toLocaleDateString('ru-RU')}</p>
-                ${vinyl.description ? `<p style="color: #bbb; line-height: 1.6; margin-top: 20px; padding-top: 20px; border-top: 1px solid #d4af37;"><strong>Заметки:</strong><br>${vinyl.description}</p>` : ''}
-
-                <!-- Tracklist -->
-                <div class="tracklist-section">
-                    <h3>🎵 Треклист</h3>
-                    
-                    <div class="add-track-form ${!isAdmin ? 'hidden' : ''}">
-                        <input type="text" id="trackName-${vinyl.id}" placeholder="Название трека" style="width: 100%;">
-                        <input type="text" id="trackDuration-${vinyl.id}" placeholder="Длительность (например: 3:45)" style="width: 100%; margin-top: 10px;">
-                        <button class="btn-primary btn-small" onclick="addTrack(${vinyl.id})" style="width: 100%; margin-top: 10px;">➕ Добавить трек</button>
-                    </div>
-
-                    <div style="margin-top: 20px;">
-                        ${tracksHtml}
-                    </div>
-                </div>
-
-                <div style="margin-top: 30px; display: flex; gap: 10px;">
-                    <button class="btn-danger ${!isAdmin ? 'hidden' : ''}" onclick="deleteVinyl(${vinyl.id}); closeDetailModal();" style="flex: 1;">🗑️ Удалить пластинку</button>
-                </div>
-            `;
-
-            document.getElementById('detailModal').classList.add('active');
-        }
-
-        function closeDetailModal() {
-            document.getElementById('detailModal').classList.remove('active');
-        }
-
-        // Update Stats
+        // Update stats
         function updateStats() {
             document.getElementById('totalCount').textContent = vinylCollection.length;
-
-            const genres = new Set(vinylCollection.map(v => v.genre));
-            document.getElementById('genreCount').textContent = genres.size;
-
-            const artists = new Set(vinylCollection.map(v => v.artist));
-            document.getElementById('artistCount').textContent = artists.size;
-
-            const uniqueGenres = Array.from(genres).sort();
-            filterGenreSelect.innerHTML = '<option value="">Все жанры</option>';
-            uniqueGenres.forEach(genre => {
-                const option = document.createElement('option');
-                option.value = genre;
-                option.textContent = genre;
-                filterGenreSelect.appendChild(option);
-            });
         }
 
-        // Render Gallery
+        // Render gallery
         function renderGallery() {
-            let filtered = [...vinylCollection];
+            const gallery = document.getElementById('gallery');
+            const emptyState = document.getElementById('emptyState');
 
-            const searchTerm = searchInput.value.toLowerCase();
-            if (searchTerm) {
-                filtered = filtered.filter(v => 
-                    v.artist.toLowerCase().includes(searchTerm) ||
-                    v.album.toLowerCase().includes(searchTerm)
-                );
-            }
-
-            const selectedGenre = filterGenreSelect.value;
-            if (selectedGenre) {
-                filtered = filtered.filter(v => v.genre === selectedGenre);
-            }
-
-            const sortType = sortBySelect.value;
-            switch(sortType) {
-                case 'name-asc':
-                    filtered.sort((a, b) => a.album.localeCompare(b.album, 'ru'));
-                    break;
-                case 'name-desc':
-                    filtered.sort((a, b) => b.album.localeCompare(a.album, 'ru'));
-                    break;
-                case 'artist-asc':
-                    filtered.sort((a, b) => a.artist.localeCompare(b.artist, 'ru'));
-                    break;
-                case 'artist-desc':
-                    filtered.sort((a, b) => b.artist.localeCompare(a.artist, 'ru'));
-                    break;
-                case 'year-desc':
-                    filtered.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
-                    break;
-                case 'year-asc':
-                    filtered.sort((a, b) => (parseInt(a.year) || 0) - (parseInt(b.year) || 0));
-                    break;
-                case 'date-added':
-                    filtered.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
-                    break;
-            }
-
-            if (filtered.length === 0) {
+            if (vinylCollection.length === 0) {
                 gallery.innerHTML = '';
                 emptyState.style.display = 'block';
             } else {
                 emptyState.style.display = 'none';
-                gallery.innerHTML = filtered.map(vinyl => {
-                    const trackCount = vinyl.tracks ? vinyl.tracks.length : 0;
-                    return `
+                gallery.innerHTML = vinylCollection.map(vinyl => `
                     <div class="vinyl-card" onclick="showDetailModal(${vinyl.id})">
-                        <div class="album-cover">
-                            ${vinyl.coverImage 
-                                ? `<img src="${vinyl.coverImage}" alt="${vinyl.album}">` 
-                                : `<div class="album-cover-placeholder">💿</div>`
-                            }
-                        </div>
+                        <div class="album-cover">💿</div>
                         <div class="card-info">
                             <h3>${vinyl.album}</h3>
                             <p style="color: #d4af37;">${vinyl.artist}</p>
                             <div class="genre-tag">${vinyl.genre}</div>
                             ${vinyl.year ? `<p style="font-size: 0.9em; color: #999;">📅 ${vinyl.year}</p>` : ''}
-                            <p style="font-size: 0.9em; color: #888;">🎵 ${trackCount} ${trackCount === 1 ? 'трек' : 'треков'}</p>
-                            ${vinyl.description ? `<div class="description">${vinyl.description}</div>` : ''}
                         </div>
                     </div>
-                `;
-                }).join('');
+                `).join('');
             }
+        }
+
+        // Show detail modal
+        function showDetailModal(id) {
+            const vinyl = vinylCollection.find(v => v.id === id);
+            if (!vinyl) return;
+
+            const modal = document.getElementById('detailModal');
+            const body = document.getElementById('modalBody');
+
+            body.innerHTML = `
+                <h2 style="color: #d4af37; margin-bottom: 10px;">${vinyl.album}</h2>
+                <p><strong>Исполнитель:</strong> ${vinyl.artist}</p>
+                <p><strong>Жанр:</strong> <span class="genre-tag">${vinyl.genre}</span></p>
+                ${vinyl.year ? `<p><strong>Год:</strong> ${vinyl.year}</p>` : ''}
+                ${vinyl.description ? `<p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #d4af37;"><strong>Заметки:</strong> ${vinyl.description}</p>` : ''}
+                ${isAdmin ? `<button class="btn-danger" onclick="deleteVinyl(${vinyl.id}); closeDetailModal();" style="background: #8b4444; margin-top: 20px; width: 100%;">🗑️ Удалить</button>` : ''}
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
         }
 
         // Close modal on outside click
         document.getElementById('detailModal').addEventListener('click', (e) => {
-            if (e.target.id === 'detailModal') {
-                closeDetailModal();
-            }
+            if (e.target.id === 'detailModal') closeDetailModal();
         });
 
-        // Initialize on page load
-        console.log('Инициализация приложения...');
-        window.addEventListener('load', () => {
-            console.log('Page fully loaded');
-            loadingScreen.classList.add('hidden');
-            initializeFirebase();
-        });
-
-        // Also try to initialize immediately
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeFirebase);
-        } else {
-            initializeFirebase();
-        }
+        // Init
+        console.log('✅ Приложение готово');
     </script>
 </body>
 </html>
